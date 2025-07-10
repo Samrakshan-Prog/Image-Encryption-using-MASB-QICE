@@ -1,0 +1,27 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Encryptor/Decryptor</title>
+</head>
+<body>
+    <h1>Encrypt / Decrypt Image</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="image" id="imageInput" />
+        <button type="button" onclick="encrypt()">Encrypt</button>
+        <button type="button" onclick="decrypt()">Decrypt</button>
+    </form>
+    <script>
+        function encrypt() {
+            const formData = new FormData(document.getElementById('uploadForm'));
+            fetch('/encrypt', { method: 'POST', body: formData })
+                .then(res => res.json()).then(data => alert(data.message));
+        }
+        function decrypt() {
+            const formData = new FormData(document.getElementById('uploadForm'));
+            fetch('/decrypt', { method: 'POST', body: formData })
+                .then(res => res.json()).then(data => alert(data.message));
+        }
+    </script>
+</body>
+</html>
