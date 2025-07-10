@@ -24,7 +24,30 @@ A secure image encryption and decryption web application using **Multi-Agent Swa
 ---
 
 ## 📁 Project Structure
-📦 image_security_project/ ├── app.py               # Flask backend ├── encryptor.py         # Encryption logic ├── decryptor.py         # Decryption logic ├── index.html           # AngularJS frontend └── README.md            # Project description
+📚 Learning Outcome
+
+Applied AI-inspired algorithms for encryption
+
+Integrated Flask and AngularJS into a real-time web system
+
+Gained experience with frontend-backend communication
+
+
+
+---
+
+🧑‍💻 Author
+
+Srisamrakshan Parthiban
+B.Sc Information Technology, NGM College
+LinkedIn | GitHub
+
+
+---
+
+📜 License
+
+This project is open-source and free to use under the MIT License.
 ---
 
 ## ⚙️ Setup & Run
