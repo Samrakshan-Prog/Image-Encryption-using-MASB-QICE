@@ -71,11 +71,11 @@ Gained experience with frontend-backend communication
 
 ---
 
-🧑‍💻 Author
+## 🧑‍💻 Author
 
-Srisamrakshan Parthiban
-B.Sc Information Technology, NGM College
-LinkedIn | GitHub
+**Srisamrakshan Parthiban**  
+B.Sc Information Technology, NGM College  
+[LinkedIn](https://www.linkedin.com/in/srisamrakshan-parthiban-64847535b) | [GitHub](https://github.com/Samrakshan-Prog)
 
 
 ---
