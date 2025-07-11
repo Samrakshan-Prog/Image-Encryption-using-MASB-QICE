@@ -1,27 +1,152 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Image Encryptor/Decryptor</title>
+  <title>MASB + QICE Image Security</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .container {
+      margin-top: 10%;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 30px;
+      border-radius: 15px;
+      display: inline-block;
+    }
+
+    h1 {
+      color: #00ffc8;
+    }
+
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      background: #00ff88;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    input {
+      margin: 10px;
+    }
+
+    .psnr-good {
+      color: #00ff00;
+    }
+
+    .psnr-warning {
+      color: #ffcc00;
+    }
+
+    .psnr-bad {
+      color: #ff4444;
+    }
+  </style>
 </head>
 <body>
-    <h1>Encrypt / Decrypt Image</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="image" id="imageInput" />
-        <button type="button" onclick="encrypt()">Encrypt</button>
-        <button type="button" onclick="decrypt()">Decrypt</button>
-    </form>
-    <script>
-        function encrypt() {
-            const formData = new FormData(document.getElementById('uploadForm'));
-            fetch('/encrypt', { method: 'POST', body: formData })
-                .then(res => res.json()).then(data => alert(data.message));
-        }
-        function decrypt() {
-            const formData = new FormData(document.getElementById('uploadForm'));
-            fetch('/decrypt', { method: 'POST', body: formData })
-                .then(res => res.json()).then(data => alert(data.message));
-        }
-    </script>
+  <div class="container" id="main">
+    <h1>🔐 Image Encryption (MASB + QICE)</h1>
+    <button onclick="showEncrypt()">Encrypt</button>
+    <button onclick="showDecrypt()">Decrypt</button>
+  </div>
+
+  <div class="container hidden" id="encryptForm">
+    <h2>Select Image to Encrypt</h2>
+    <input type="file" id="encImg"><br>
+    <button onclick="encrypt()">Start Encryption</button>
+    <p id="encStatus"></p>
+    <button onclick="goHome()">⬅ Back</button>
+  </div>
+
+  <div class="container hidden" id="decryptForm">
+    <h2>Upload Encrypted Image and Key</h2>
+    <input type="file" id="decImg"><br>
+    <input type="file" id="decKey"><br>
+    <button onclick="decrypt()">Start Decryption</button>
+    <p id="decStatus"></p>
+
+    <div id="decInfo" class="hidden">
+      <p id="psnrInfo"></p>
+      <p id="sizeInfo"></p>
+    </div>
+
+    <button onclick="goHome()">⬅ Back</button>
+  </div>
+
+  <script>
+    function showEncrypt() {
+      document.getElementById('main').classList.add('hidden');
+      document.getElementById('encryptForm').classList.remove('hidden');
+    }
+
+    function showDecrypt() {
+      document.getElementById('main').classList.add('hidden');
+      document.getElementById('decryptForm').classList.remove('hidden');
+    }
+
+    function goHome() {
+      document.getElementById('main').classList.remove('hidden');
+      document.getElementById('encryptForm').classList.add('hidden');
+      document.getElementById('decryptForm').classList.add('hidden');
+      document.getElementById('encStatus').innerText = '';
+      document.getElementById('decStatus').innerText = '';
+      document.getElementById('psnrInfo').innerText = '';
+      document.getElementById('sizeInfo').innerText = '';
+      document.getElementById('psnrInfo').className = '';
+      document.getElementById('decInfo').classList.add('hidden');
+    }
+
+    function encrypt() {
+      const file = document.getElementById('encImg').files[0];
+      if (!file) return alert('Select an image');
+      const formData = new FormData();
+      formData.append('image', file);
+
+      fetch('/encrypt', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => document.getElementById('encStatus').innerText = data.message);
+    }
+
+    function decrypt() {
+      const img = document.getElementById('decImg').files[0];
+      const key = document.getElementById('decKey').files[0];
+      if (!img || !key) return alert('Both files are required');
+      const formData = new FormData();
+      formData.append('image', img);
+      formData.append('key', key);
+
+      fetch('/decrypt', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('decStatus').innerText = data.message;
+          document.getElementById('decInfo').classList.remove('hidden');
+          document.getElementById('sizeInfo').innerText =
+            `📥 Original size: ${data.original_size} | 📤 Decrypted size: ${data.decrypted_size}`;
+
+          const psnrText = data.psnr || '';
+          document.getElementById('psnrInfo').innerText = psnrText;
+
+          // extract PSNR value and color-code it
+          const match = psnrText.match(/([0-9.]+)\s*dB/);
+          if (match) {
+            const psnr = parseFloat(match[1]);
+            const psnrClass = psnr >= 50 ? 'psnr-good' : psnr >= 40 ? 'psnr-warning' : 'psnr-bad';
+            document.getElementById('psnrInfo').className = psnrClass;
+          }
+        });
+    }
+  </script>
 </body>
 </html>
