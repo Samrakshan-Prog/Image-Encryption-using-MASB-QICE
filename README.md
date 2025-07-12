@@ -25,6 +25,8 @@ A secure image encryption and decryption web application using **Multi-Agent Swa
 
 ## 📁 Project Structure
 
+```bash
+
 📦 image_security_project/
 ├── app.py               # Flask backend server
 ├── encryptor.py         # Image encryption logic (MASB + QICE)
@@ -32,6 +34,7 @@ A secure image encryption and decryption web application using **Multi-Agent Swa
 ├── index.html           # AngularJS frontend UI
 ├── README.md            # Project documentation
 └── requirements.txt     # (Optional) List of Python dependencies
+```
 
 ---
 ## ⚙️ Setup & Run
