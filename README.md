@@ -48,7 +48,10 @@ A secure image encryption and decryption web application using **Multi-Agent Swa
 
 ```bash
 python app.py
-Open your browser and go to: http://localhost:5000
+```
+Open your browser and go to:
+```bash
+http://localhost:5000
 
 ```
 ---
